@@ -174,7 +174,8 @@ In a federated Azure AD configuration, devices rely on AD FS or an  on-premises 
 Windows current devices authenticate by using Integrated Windows Authentication to an active WS-Trust endpoint (either 1.3 or 2005 versions) hosted by the on-premises federation service.
 
 > [!NOTE]
-> When you're using AD FS, either **adfs/services/trust/13/windowstransport** or **adfs/services/trust/2005/windowstransport** must be enabled. If you're using the Web Authentication Proxy, also ensure that this endpoint is published through the proxy. You can see what endpoints are enabled through the AD FS management console under **Service** > **Endpoints**.
+> When you're using AD FS, either **adfs/services/trust/13/windowstransport** or **adfs/services/trust/2005/windowstransport** must be enabled as an intranet only facing endpoints. Both endpoints should NOT be exposed as extranet facing endpoints through the Web Application Proxy. Exposing them to extranet could allow requests against these endpoints to bypass lockout protections. These endpoints should therefore be disabled on the proxy (i.e. disabled from extranet) to protect AD account lockout. There is no known end user impact by disabling these endpoints on the proxy. More info available at https://docs.microsoft.com/en-us/windows-server/identity/ad-fs/deployment/best-practices-securing-ad-fs#disable-ws-trust-windows-endpoints-on-the-proxy-ie-from-extranet
+You can see what endpoints are enabled through the AD FS management console under **Service** > **Endpoints**.
 >
 > If you don’t have AD FS as your on-premises federation service, follow the instructions from your vendor to make sure they support WS-Trust 1.3 or 2005 endpoints and that these are published through the Metadata Exchange file (MEX).
 
